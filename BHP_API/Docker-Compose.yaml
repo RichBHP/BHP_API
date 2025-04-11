@@ -1,31 +1,30 @@
-﻿
-services:
-sqlserver:
-image: mcr.microsoft.com / mssql / server:latest
-container_name: sqlserver
-ports:
-      -"1433:1433"
+﻿services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
     env_file:
-- .env.defaults
-- .env
+      - .env.defaults
+      - .env
     volumes:
--sqlserver_data:/ var / opt / mssql
+      - sqlserver_data:/var/opt/mssql
     restart: always
 
   webapi:
-    build:
-context: backend
-dockerfile: Dockerfile
-container_name: todoapi
-env_file:
-      - .env.defaults
-      - .env
-    depends_on:
--sqlserver
-    ports:
--"8080:8080"
-    volumes:
-- .:/ app
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: DockerAPI
+      env_file:
+        - .env.defaults
+        - .env
+      depends_on:
+        - sqlserver
+      ports:
+        - "8080:8080"
+      volumes:
+      - .:/app
 
 volumes:
-sqlserver_data:
+  sqlserver_data:
