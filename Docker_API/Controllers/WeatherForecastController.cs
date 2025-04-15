@@ -1,8 +1,11 @@
 using BHP_API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web.Resource;
 
 namespace BHP_API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -20,6 +23,7 @@ namespace BHP_API.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:ReadScope")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
